@@ -1,0 +1,68 @@
+---
+  - name: Ensure that python3 is available 
+    hosts: ss_server
+    remote_user: root
+    tasks:
+      - name: Install python3 and pip
+        package:
+          name:
+            - python3
+            - python3-pip
+
+  - name: Setup shadowsocks server
+    hosts: ss_server
+    remote_user: root
+    vars: 
+      ansible_python_interpreter: /usr/bin/python3
+    tasks:
+      - name: Create the non-root user
+        user:
+          name: "{{ username }}" 
+          password: "{{ password | string | password_hash('sha512')}}"
+          update_password: on_create
+          shell: /bin/bash
+          skeleton: "/etc/skel"
+
+      - name: Add user to sudoers
+        community.general.sudoers:
+          name: "{{ username }}" 
+          state: present
+          user: "{{ username }}" 
+          commands: ALL  
+
+      - name: Install docker and docker-compose SDK for python
+        pip:
+          name:
+            - docker
+            - docker-compose
+
+      - name: Install docker
+        include_role:
+           name: geerlingguy.docker 
+        vars:
+          docker_users: "{{ username }}" 
+
+      - name: Create a directory for files
+        become: true
+        become_user: "{{ username }}" 
+        file:
+          path: "~/shadowsocks"
+          state: directory
+
+      - name: Copy docker-compose.yml to the server
+        become: true
+        become_user: "{{ username }}" 
+        copy:
+          src: "docker/{{ item }}"
+          dest: "~/shadowsocks"
+        loop:
+          - docker-compose.yml
+          - .env
+
+      - name: Start the service
+        become: true
+        become_user: "{{ username }}" 
+        docker_compose:
+          project_name: shadowsocks
+          project_src: "~/shadowsocks"
+          state: present
