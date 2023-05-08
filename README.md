@@ -1,4 +1,4 @@
-# Ansible playbook to setup shadowsocks server with docker
+# Ansible playbook to setup shadowsocks server
 
 ## Introdution
 This repo provides an ansible playbook to setup a shadowsocks server with docker.
