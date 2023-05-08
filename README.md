@@ -2,6 +2,7 @@
 
 ## Introdution
 This repo provides an ansible playbook to setup a shadowsocks server with docker.
+
 For docker installation the [docker role from geerlingguy](https://github.com/geerlingguy/ansible-role-docker) has been used.
 
 ## Setup
