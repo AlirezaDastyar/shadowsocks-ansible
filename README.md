@@ -28,5 +28,6 @@ PASSWORD=VerySecurePassword
 PORT=25555
 ```
 ##### Run it
+Run the following command and provide the root password for ssh
 
 `ansible-playbook setup.yml -i inventory.ini -k`
