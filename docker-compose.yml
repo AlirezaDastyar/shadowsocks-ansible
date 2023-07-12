@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  shadowsocks:
+    image: ghcr.io/shadowsocks/ssserver-rust:latest
+    ports:
+      - "25555:8388"
+    volumes:
+      -  ./config.json:/etc/shadowsocks-rust/config.json
+    restart: unless-stopped

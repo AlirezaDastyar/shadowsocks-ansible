@@ -22,6 +22,11 @@
           update_password: on_create
           shell: /bin/bash
           skeleton: "/etc/skel"
+          
+      - name: Ensure sudo is available
+        package:
+          name:
+            - sudo
 
       - name: Add user to sudoers
         community.general.sudoers:
@@ -53,11 +58,11 @@
         become: true
         become_user: "{{ username }}" 
         copy:
-          src: "docker/{{ item }}"
+          src: "{{ item }}"
           dest: "~/shadowsocks"
         loop:
           - docker-compose.yml
-          - .env
+          - config.json
 
       - name: Start the service
         become: true
