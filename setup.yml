@@ -54,14 +54,14 @@
           path: "~/shadowsocks"
           state: directory
 
-      - name: Copy docker-compose.yml to the server
+      - name: Copy docker compose and config file to the server
         become: true
         become_user: "{{ username }}" 
         copy:
           src: "{{ item }}"
           dest: "~/shadowsocks"
         loop:
-          - docker-compose.yml
+          - compose.yml
           - config.json
 
       - name: Start the service
