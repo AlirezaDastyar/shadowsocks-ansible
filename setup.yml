@@ -67,7 +67,7 @@
       - name: Start the service
         become: true
         become_user: "{{ username }}" 
-        docker_compose:
+        community.docker.docker_compose_v2:
           project_name: shadowsocks
           project_src: "~/shadowsocks"
           state: present
