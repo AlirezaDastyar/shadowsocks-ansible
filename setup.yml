@@ -28,18 +28,6 @@
           shell: /bin/bash
           skeleton: "/etc/skel"
           
-      - name: Ensure sudo is available
-        package:
-          name:
-            - sudo
-
-      - name: Add user to sudoers
-        community.general.sudoers:
-          name: "{{ username }}" 
-          state: present
-          user: "{{ username }}" 
-          commands: ALL  
-
       - name: Install docker and docker-compose SDK for python
         pip:
           name:
